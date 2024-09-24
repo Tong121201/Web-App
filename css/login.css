@@ -1,0 +1,241 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    background-image: url('../assets/ACMS.png');
+    background-size: cover; /* Ensures the background image covers the whole page */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents repeating the image */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.input-group {
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.login-btn, .google-btn {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.google-btn {
+    background-color: #db4437;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.google-btn img {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+
+.login-btn:hover, .google-btn:hover {
+    background-color: #45a049;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-bottom: 1rem;
+}
+
+.forgot-password a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.divider::before, .divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+}
+
+.divider::before {
+    margin-right: 0.75em;
+}
+
+.divider::after {
+    margin-left: 0.75em;
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.register-link a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+@media screen and (max-width: 600px) {
+    .login-container {
+        padding: 1.5rem;
+    }
+
+    .login-btn, .google-btn {
+        font-size: 0.9rem;
+    }
+}
+
+.admin-login-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    text-decoration: none;
+}
+
+.admin-login-btn img {
+    width: 50px; /* Adjust the width as per your requirement */
+    height: auto; /* Maintain the aspect ratio */
+    transition: transform 0.3s ease;
+}
+
+.admin-login-btn:hover img {
+    transform: scale(1.1); /* Slightly enlarge the image on hover */
+}
+
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-container input {
+    width: 100%;
+    padding-right: 30px; /* Space for the toggle button */
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+
+/* Styles for popup container */
+.popup-container {
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Popup content */
+.popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%; /* Make it responsive */
+    max-width: 410px; /* Max width for larger screens */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Input field */
+.popup-content input[type="email"] {
+    width: 100%; /* Full width of the form */
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box; /* Ensure padding doesn't increase element size */
+}
+
+/* Button container */
+.button-row {
+    display: flex;
+    justify-content: space-evenly; /* Evenly space the buttons */
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* Buttons with even width */
+.submit-btn, .close-btn {
+    flex: 1; /* Let buttons take equal width */
+    margin: 0 10px; /* Space between buttons */
+    padding: 10px 0;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap; /* Ensure text stays on one line */
+}
+
+/* Submit button */
+.submit-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+/* Close button */
+.close-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
+
+/* Button hover effects */
+.submit-btn:hover, .close-btn:hover {
+    opacity: 0.9;
+}

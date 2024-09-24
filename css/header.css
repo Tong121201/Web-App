@@ -1,0 +1,21 @@
+/* header.css */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.menu-icon {
+    font-size: 24px;
+    cursor: pointer;
+
+}
+
+.notification-bell {
+    font-size: 24px;
+    cursor: pointer;
+}
+

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="./css/adminlogin.css">
+    <script type="module" src="../js/admin-login.js"></script>
+    
+
+</head>
+<body>
+    <button class="back-btn" onclick="window.location.href='loginpage.html'">Back</button> <!-- Link to normal user login page -->
+
+    <div class="login-container">
+        <h2>Admin Login</h2>
+        <img src="assets/adminlogo.png" alt="Admin Logo" class="admin-logo">
+        <form action="#" method="post">
+            <div class="input-group">
+                <label for="admin-username">Username</label>
+                <input type="text" id="admin-username" name="username" required>
+            </div>
+            <div class="input-group">
+                <label for="admin-password">Password</label>
+                <input type="password" id="admin-password" name="password" required>
+                <span class="toggle-password" id="toggle-password">👁️</span> <!-- Add toggle icon here -->
+            </div>
+            <button type="submit" class="login-btn">Login as Admin</button>
+        </form>
+    </div>
+</body>
+</html>

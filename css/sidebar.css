@@ -1,0 +1,84 @@
+/* sidebar.css */
+.sidebar {
+    width: 200px;
+    background-color: #f0f0f0;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: -240px;
+    height: 100%;
+    transition: left 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar.visible {
+    left: 0;
+}
+
+.sidebar-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-item {
+    padding: 15px 0;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+.sidebar-item:last-child {
+    border-bottom: none;
+}
+
+/* Add hover effect for sidebar items */
+.sidebar-item:hover {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+/* Specific link styling */
+.sidebar-item a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+.profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+/* Sign Out Button Styling */
+.sign-out {
+    padding: 15px 0; /* Increase padding for consistency with sidebar items */
+    margin-top: auto;
+    margin-bottom: 40px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #333; /* Set default text color */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+    text-decoration: none; /* Remove underline for any text */
+}
+
+/* Add hover effect for the sign-out button */
+.sign-out:hover {
+    background-color: #e0e0e0; /* Background color on hover */
+}
+
+/* Align the sign-out icon and add some spacing */
+.sign-out-icon {
+    margin-right: 10px;
+    color: inherit; /* Inherit the color for hover effect */
+}
+

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Notification Bell with Dynamic Messages</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .notification-bell {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .bell-icon {
+            display: inline-block;
+        }
+        .notification-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .notification-panel {
+            display: none;
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            background-color: white;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .notification-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+        }
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+        .notification-item.unread {
+            background-color: #f0f0f0;
+        }
+        .notification-checkbox {
+            margin-right: 10px;
+            margin-top: 3px;
+        }
+        .notification-content {
+            flex-grow: 1;
+        }
+        .notification-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .notification-message {
+            margin-bottom: 5px;
+        }
+        .notification-time {
+            font-size: 12px;
+            color: #888;
+        }
+        .no-notifications {
+            padding: 20px;
+            text-align: center;
+            color: #888;
+        }
+        .delete-option {
+            margin-top: 10px;
+            text-align: right;
+            padding: 10px;
+            border-top: 1px solid #eee;
+        }
+        .delete-btn {
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .delete-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="notification-bell" id="notificationBell">
+        <span class="bell-icon">🔔</span>
+        <span class="notification-count" id="notificationCount"></span>
+    </div>
+
+    <div class="notification-panel" id="notificationPanel">
+        <div id="notificationList"></div>
+        <div class="delete-option">
+            <button id="deleteBtn" class="delete-btn" disabled>Delete Selected</button>
+        </div> 
+    </div>
+
+    <script>
+        const bell = document.getElementById('notificationBell');
+        const panel = document.getElementById('notificationPanel');
+        const list = document.getElementById('notificationList');
+        const count = document.getElementById('notificationCount');
+        const deleteBtn = document.getElementById('deleteBtn');
+
+        let notifications = [
+            { id: 1, title: 'New Message', content: 'You have a new message', time: new Date(2024, 8, 13, 10, 30), unread: true, link: '#message1' },
+            { id: 2, title: 'Reminder', content: 'Meeting in 30 minutes', time: new Date(2024, 8, 13, 11, 0), unread: true, link: '#reminder1' },
+            { id: 3, title: 'Update', content: 'System update completed', time: new Date(2024, 8, 13, 11, 30), unread: true, link: '#update1' }
+        ];
+
+        function updateNotificationCount() {
+            const unreadCount = notifications.filter(note => note.unread).length;
+            count.textContent = unreadCount;
+            count.style.display = unreadCount > 0 ? 'inline-block' : 'none';
+        }
+
+        function renderNotifications() {
+            if (notifications.length === 0) {
+                list.innerHTML = '<div class="no-notifications">No Notifications Yet</div>';
+                deleteBtn.disabled = true;
+            } else {
+                list.innerHTML = notifications.map(note => `
+                    <div class="notification-item ${note.unread ? 'unread' : ''}" data-id="${note.id}" data-link="${note.link}">
+                        <input type="checkbox" class="notification-checkbox">
+                        <div class="notification-content">
+                            <div class="notification-title">${note.title}</div>
+                            <div class="notification-message">${note.content}</div>
+                            <div class="notification-time">${note.time.toLocaleString()}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            updateNotificationCount();
+        }
+
+        function addNewNotification(title, content, link) {
+            const newId = notifications.length > 0 ? Math.max(...notifications.map(n => n.id)) + 1 : 1;
+            const newNotification = {
+                id: newId,
+                title: title,
+                content: content,
+                time: new Date(),
+                unread: true,
+                link: link
+            };
+            notifications.unshift(newNotification);
+            renderNotifications();
+        }
+
+        bell.addEventListener('click', () => {
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+            renderNotifications();
+        });
+
+        list.addEventListener('click', (e) => {
+            const item = e.target.closest('.notification-item');
+            if (item && !e.target.classList.contains('notification-checkbox')) {
+                const id = parseInt(item.dataset.id);
+                const notification = notifications.find(note => note.id === id);
+                if (notification) {
+                    if (notification.unread) {
+                        notification.unread = false;
+                        item.classList.remove('unread');
+                        updateNotificationCount();
+                    }
+                    window.location.href = notification.link;
+                }
+            }
+        });
+
+        list.addEventListener('change', (e) => {
+            if (e.target.classList.contains('notification-checkbox')) {
+                const checkedBoxes = list.querySelectorAll('.notification-checkbox:checked');
+                deleteBtn.disabled = checkedBoxes.length === 0;
+            }
+        });
+
+        deleteBtn.addEventListener('click', () => {
+            const checkedBoxes = list.querySelectorAll('.notification-checkbox:checked');
+            const idsToRemove = Array.from(checkedBoxes).map(cb => parseInt(cb.closest('.notification-item').dataset.id));
+            notifications = notifications.filter(note => !idsToRemove.includes(note.id));
+            renderNotifications();
+        });
+
+        // Initial render
+        renderNotifications();
+
+        // Simulate receiving new notifications
+        setTimeout(() => {
+            addNewNotification('New Alert', 'You have a new alert', '#newAlert1');
+        }, 5000);
+
+        // You can call addNewNotification() whenever a new message comes in
+        // For example, you might use this with a WebSocket or periodic AJAX calls in a real application
+    </script>
+</body>
+</html>

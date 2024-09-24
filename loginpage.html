@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="../css/login.css">
+    <script type="module" src="../js/login.js" defer></script>
+</head>
+
+<body>
+    <a href="adminlogin.html" class="admin-login-btn"><img src="assets/admin.png" alt="Admin Login Logo"></a>
+
+    <div class="login-container">
+        <h2>Login</h2>
+        <form action="#" method="post">
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Email">
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <div class="password-container">
+                    <input type="password" id="password" name="password" required>
+                    <span class="toggle-password" id="toggle-password">👁️</span>
+                </div>
+            </div>
+            <div class="forgot-password">
+                <a href="#" id="reset">Forgot Password?</a>
+            </div>
+            <button type="submit" class="login-btn" id="submit">Login</button>
+        </form>
+
+        <div class="divider">or</div>
+
+        <button class="google-btn" id="google-btn">
+            <img src="assets/google_logo.png" alt="Google Logo">
+            Continue with Google
+        </button>
+
+        <div class="register-link">
+            Don't have an account? <a href="signuppage.html">Sign Up</a>
+        </div>
+    </div>
+
+    <!-- Password Reset Pop-Up Container -->
+    <div id="popup-container" class="popup-container">
+        <div class="popup-content">
+            <h2>Reset Password</h2>
+            <p>Please enter your email to receive a password reset link.</p>
+            <form id="reset-password-form">
+                <input type="email" id="reset-email" name="reset-email" placeholder="Enter your email" required>
+                <div class="button-row">
+                    <button type="submit" class="submit-btn">Submit</button>
+                    <button type="button" class="close-btn" id="close-popup">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>

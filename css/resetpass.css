@@ -1,0 +1,125 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 90%; /* Ensures responsiveness */
+    width: 400px; /* Fixed width for larger screens */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-container input {
+    width: 100%; /* Ensures text fields take full width of the container */
+    padding: 10px;
+    padding-right: 40px; /* Space for the toggle button */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box; /* Ensures padding is included in the width calculation */
+}
+
+.password-container input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 65%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    user-select: none;
+    font-size: 15px;
+}
+
+.btn {
+    display: block;
+    width: 100%; /* Ensures button takes full width of the container */
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+    .container {
+        max-width: 95%; /* Adjust container width on smaller screens */
+        padding: 15px;
+    }
+
+    .form-group input {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .btn {
+        padding: 8px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 400px) {
+    .container {
+        max-width: 100%; /* Full width on very small screens */
+        padding: 10px;
+    }
+
+    .form-group input {
+        padding: 6px;
+        font-size: 12px;
+    }
+
+    .btn {
+        padding: 6px;
+        font-size: 14px;
+    }
+}
