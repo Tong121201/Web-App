@@ -17,10 +17,56 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+// Function to update password
+async function updatePassword() {
+    const currentPasswordInput = document.getElementById('current-password');
+    const newPasswordInput = document.getElementById('new-password');
+    const confirmPasswordInput = document.getElementById('confirm-password');
+
+    const currentPassword = currentPasswordInput.value;
+    const newPassword = newPasswordInput.value;
+    const confirmPassword = confirmPasswordInput.value;
+
+    // Validate that the new password matches the confirmation password
+    if (newPassword !== confirmPassword) {
+        alert("New password and confirm password do not match.");
+        return;
+    }
+
+    // Validate that the new password meets the rules
+    if (!validate_password(newPassword)) {
+        return; // If validation fails, exit the function
+    }
+
+    // Check if the new password is the same as the current password
+    if (newPassword === currentPassword) {
+        alert("The new password cannot be the same as the current password.");
+        return;
+    }
+
+    try {
+        // Re-authenticate the user
+        await signInWithEmailAndPassword(auth, auth.currentUser.email, currentPassword); 
+
+        // If the re-authentication is successful, update the password
+        await updatePassword(auth.currentUser, newPassword); 
+        alert("Password updated successfully!");
+        resetPasswordFields(); // Function to clear the input fields after successful update
+    } catch (error) {
+        // Handle specific errors
+        if (error.code === 'auth/wrong-password') {
+            alert("The current password you entered is incorrect. Please try again.");
+        } else {
+            console.error("Error updating password: ", error);
+            alert("Error updating password: " + error.message);
+        }
+    }
+}
+
 // Function to validate password based on rules
 function validate_password(password) {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+{}\[\]:;"'<>,.?~\\/-]).{6,}$/;
-    
+
     if (passwordRegex.test(password)) {
         return true; // Password meets the requirements
     } else {
@@ -82,9 +128,10 @@ document.getElementById('reset-password-form').addEventListener('submit', async 
             await confirmPasswordReset(auth, oobCode, newPassword);
             alert('Password has been reset successfully.');
             window.close();
-            //window.location.href = 'login.html';
+            window.location.href = 'login.html';
         } catch (error) {
             alert(error.message);
         }
     }
 });
+

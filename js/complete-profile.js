@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDocs, collection, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 import { getAuth,  linkWithCredential, EmailAuthProvider } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
 
 // Firebase config
@@ -23,6 +23,87 @@ document.getElementById('email').value = userEmail;
 
 // Ensure email field is read-only
 document.getElementById('email').readOnly = true;
+
+// Function to send notification to admin
+async function notifyAdmin(employerData) {
+    try {
+        // Get all admin documents
+        const adminsSnapshot = await getDocs(collection(db, 'admins'));
+        
+        // For each admin, send a notification
+        for (const adminDoc of adminsSnapshot.docs) {
+            const adminData = adminDoc.data();
+            const deviceToken = adminData.fcmToken;
+            
+            if (deviceToken) {
+                console.log('Admin Device Token:', deviceToken);
+
+                // Prepare notification content
+                const notificationTitle = 'New Employer Registration';
+                const notificationBody = `${employerData.company_name} has registered as a new employer`;
+
+                console.log('Sending notification with payload:', {
+                    token: deviceToken,
+                    title: notificationTitle,
+                    body: notificationBody
+                });
+
+                // Send notification
+                const response = await fetch('http://localhost:3000/send-notification', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        token: deviceToken,
+                        title: notificationTitle,
+                        body: notificationBody,
+                        data: {
+                            type: 'new_employer_registration',
+                            employerId: auth.currentUser.uid,
+                            companyName: employerData.company_name,
+                            companyEmail: employerData.company_email
+                        }
+                    })
+                });
+
+                const responseData = await response.json();
+                console.log('Notification server response:', responseData);
+
+                if (!response.ok) {
+                    throw new Error(`Notification server error: ${JSON.stringify(responseData)}`);
+                }
+
+                // Store notification in admin's document using arrayUnion
+                const adminRef = doc(db, 'admins', adminDoc.id);
+                await updateDoc(adminRef, {
+                    notifications: arrayUnion({
+                        title: notificationTitle,
+                        body: notificationBody,
+                        type: 'new_employer_registration',
+                        employerId: auth.currentUser.uid,
+                        companyName: employerData.company_name,
+                        companyEmail: employerData.company_email,
+                        createdAt: new Date().toISOString(),
+                        read: false
+                    })
+                });
+
+                console.log('Notification sent and stored successfully for admin:', adminDoc.id);
+            } else {
+                console.log('No device token found for admin:', adminDoc.id);
+            }
+        }
+    } catch (error) {
+        console.error('Error in notifyAdmin:', error);
+        // Log the full error details for debugging
+        console.error('Error details:', {
+            message: error.message,
+            stack: error.stack,
+            cause: error.cause
+        });
+    }
+}
 
 // Handle form submission
 const submit = document.getElementById('submit');
@@ -81,6 +162,7 @@ submit.addEventListener('click', async function (event) {
                 company_name: company_name,
                 company_email: userEmail,
                 company_tel: company_tel,
+                hiredNumber: 0,
                 address: {
                     no: address_no,
                     road: address_road,
@@ -93,6 +175,9 @@ submit.addEventListener('click', async function (event) {
 
             // Update user data in Firestore
             await setDoc(doc(db, 'employers', user.uid), userData);
+            
+            // Send notification to admin
+            await notifyAdmin(userData);
             
             alert("Profile updated successfully!");
             window.location.href = "homepage.html";  // Redirect to homepage

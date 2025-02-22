@@ -7,24 +7,189 @@
     <link rel="stylesheet" href="css/homepage.css">
     <link rel="stylesheet" href="css/header.css"> <!-- Include sidebar styles -->
     <link rel="stylesheet" href="css/sidebar-admin.css"> <!-- Include header styles -->
-   
+    <link rel="stylesheet" href="css/manage-employer.css"> <!-- Include header styles -->
+    
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+    
+
+    <!-- Bootstrap and Bootstrap Table JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+    
+
 </head>
 <body>
-     <div class="container">
+    <div class="layout">
+        <!-- Include header component -->
+        <div id="header-container"></div>
         <!-- Include sidebar component -->
         <div id="sidebar-container"></div>
+        <div class="content-wrapper">
+            <!-- Main Content Area -->
+            <div class="main-content" id="main-content">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">Employer Account</li>
+                    </ol>
+                </nav>
+                <div class="table-container">
+                    <!-- Make table responsive -->
+                    <div class="table-responsive">
+                        <table id="employer_table" class="table table-bordered table-hover text-center" 
+                        data-toggle="table" 
+                        data-search="true" 
+                        data-pagination="true" 
+                        data-show-columns="true"
+                        data-minimum-count-columns="5" 
+                        data-show-toggle="true"
+                        data-click-to-select="true"
+                        data-toolbar=".action-bar">
+                            <thead>
+                                <tr>
+                                    <th data-field="companyName" data-visible="true" data-sortable="true">Company Name</th>
+                                    <th data-field="companyEmail" data-visible="true" data-sortable="true">Company Email</th>
+                                    <th data-field="companyTel" data-visible="true" data-sortable="true">Company Tel</th>
+                                    <th data-field="companyAddress" data-visible="true">Comapany Address</th>
+                                    <th data-field="hiredStudents" data-visible="true" data-sortable="true">No. of Hired Students</th>
+                                    <th data-field="createdJobs" data-visible="true" data-sortable="true">No. of Created Jobs</th>
+                                    <th data-field="status" data-visible="true" data-sortable="true">Status</th>
+                                    <th data-field="action" data-visible="true">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Table content will be dynamically populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <!-- Main Content Area -->
-        <div class="main-content" id="main-content">
-            <!-- Include header component -->
-            <div id="header-container"></div>
-            <h1>Employer Account</h1>
-            <p>Admin can manage employer account  here.</p>
+    <!-- Update Form Modal -->
+<div class="modal fade" id="updateEmployerModal" tabindex="-1" aria-labelledby="updateEmployerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="updateEmployerModalLabel">Update Employer Information</h5>
+            </div>
+            <div class="modal-body">
+                <form id="updateEmployerForm">
+                    <div class="mb-3">
+                        <label for="updateCompanyName" class="form-label">Company Name</label>
+                        <input type="text" class="form-control" id="updateCompanyName" name="companyName" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="updateCompanyEmail" class="form-label">Company Email</label>
+                        <input type="email" class="form-control" id="updateCompanyEmail" name="companyEmail" required readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="updateCompanyTel" class="form-label">Company Tel</label>
+                        <input type="tel" class="form-control" id="updateCompanyTel" name="companyTel" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address">Address <i style="color: red;">*</i></label>
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="address-no" name="addressNo" placeholder="No" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="address-road" name="addressRoad" placeholder="Road" required>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="address-postcode" name="addressPostcode" placeholder="Postcode" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="address-city" name="addressCity" placeholder="City" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <select class="form-select" id="address-state" name="addressState" required>
+                                    <option value="" disabled selected>Select State</option>
+                                    <option value="Johor">Johor</option>
+                                    <option value="Kedah">Kedah</option>
+                                    <option value="Kelantan">Kelantan</option>
+                                    <option value="Kuala Lumpur">Kuala Lumpur</option>
+                                    <option value="Melaka">Melaka</option>
+                                    <option value="Negeri Sembilan">Negeri Sembilan</option>
+                                    <option value="Pahang">Pahang</option>
+                                    <option value="Penang">Penang</option>
+                                    <option value="Perak">Perak</option>
+                                    <option value="Perlis">Perlis</option>
+                                    <option value="Sabah">Sabah</option>
+                                    <option value="Sarawak">Sarawak</option>
+                                    <option value="Selangor">Selangor</option>
+                                    <option value="Terengganu">Terengganu</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" id="resetFormBtn">Reset</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmUpdateBtn">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete the following employer account?</p>
+                    <p><strong>Company Name: </strong><span id="deleteModalCompanyName"></span></p>
+                    <p><strong>Company Email: </strong><span id="deleteModalCompanyEmail"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Block Confirmation Modal -->
+    <div class="modal fade" id="blockConfirmationModal" tabindex="-1" aria-labelledby="blockConfirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title" id="blockConfirmationModalLabel">Confirm Block/Unblock</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to <span id="blockActionText">block/unblock</span> the following employer account?</p>
+                    <p><strong>Company Name: </strong><span id="blockModalCompanyName"></span></p>
+                    <p><strong>Company Email: </strong><span id="blockModalCompanyEmail"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-warning" id="confirmBlockBtn">Confirm</button>
+                </div>
+            </div>
         </div>
     </div>
 
 
     <script type="module" src="js/admin.js"></script>
+    <script type="module" src="../js/manage-employer.js"></script>
  
 </body>
 </html>

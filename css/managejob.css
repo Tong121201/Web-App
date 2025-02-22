@@ -1,0 +1,478 @@
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css');
+
+/* Breadcrumb Styles */
+.breadcrumb {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.breadcrumb-item a {
+    color: #007bff;
+}
+
+.breadcrumb-item {
+    font-size: 1.45rem;
+}
+
+.breadcrumb-item.active {
+    color: #6c757d;
+}
+
+.create-btn {
+    margin-left: 20px;
+}
+
+/* Location Group Styles */
+.location-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.location-row {
+    display: flex;
+    gap: 10px;
+}
+
+.location-group input,
+.location-group select {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.location-group select {
+    padding-right: 1.5rem;
+}
+
+/* Input Group Styles */
+.input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Field Select Styles */
+#field-select {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+/* Custom Requirement Input Styles */
+#custom-requirement {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 1rem;
+    height: 2.5rem;
+    box-sizing: border-box;
+    border-right: none;
+}
+
+/* Button Styles */
+.input-group-append .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: 1px solid #ced4da;
+    padding: 0.5rem 0.8rem;
+    font-size: 1rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.btn-outline-secondary {
+    border-radius: 5px;
+}
+
+/* Form Control Styles */
+.input-group .form-control {
+    border-right: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    height: 2.5rem;
+}
+
+/* Job Requirements List Styles */
+#job-requirements-list {
+    margin-top: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 50px;
+    border: 1px dashed #dee2e6;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 1rem;
+}
+
+.requirement-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.requirement-item:hover {
+    background-color: #f0f0f0 !important;
+}
+
+.requirement-item span {
+    flex: 1;
+    word-wrap: break-word;
+}
+
+.requirement-item button {
+    background-color: transparent;
+    border: none;
+    color: #dc3545;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.requirement-item:hover button {
+    opacity: 1;
+}
+
+/* Requirements Modal Styles */
+.requirements-checklist {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.requirements-checklist .form-check {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+
+/* Custom Requirements Section */
+#custom-requirements .input-group {
+    margin-top: 10px;
+}
+
+
+
+/* Hired Pax Input Styles */
+#hired-pax {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .breadcrumb-item {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .breadcrumb-item {
+        font-size: 0.875rem;
+    }
+}
+
+
+/* Modal stacking fixes */
+.modal-backdrop + .modal-backdrop {
+    z-index: 1050;
+}
+
+.modal {
+    overflow-y: auto !important;
+}
+
+#createJobModal {
+    z-index: 1050;
+}
+
+#deleteConfirmationModal {
+    z-index: 1046;
+}
+
+#requirementsModal {
+    z-index: 1060;
+}
+
+.modal-open .modal {
+    overflow-x: hidden;
+    overflow-y: auto !important;
+}
+
+    /* Responsive Adjustments for Job Requirements Section */
+    .requirements-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    /* Adjust badge and button sizes for smaller screens */
+    .requirements-container .badge {
+        font-size: 15px; /* Smaller font for badges on small screens */
+        padding: 5px 8px;
+    }
+
+    .requirements-container .show-more-btn {
+        font-size: 14px;
+    }
+
+    /* Responsive font sizes for requirement section */
+@media (max-width: 768px) {
+    .requirements-container .badge {
+        font-size: 13px;
+        padding: 4px 6px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 150px; /* Adjust the max width as needed */
+    }
+
+    .requirements-container .badge:hover {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: initial;
+    }
+
+    .requirements-container small {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .requirements-container .badge {
+        font-size: 12px;
+        padding: 3px 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 120px; /* Adjust the max width as needed */
+    }
+
+    .requirements-container .badge:hover {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: initial;
+    }
+
+    .requirements-container .show-more-btn {
+        font-size: 13px;
+    }
+
+    .requirements-container small {
+        font-size: 13px;
+    }
+}
+
+    /* Adjust badge display to wrap to the next line on narrow screens */
+    .requirements-container .requirements-preview,
+    .requirements-container .additional-requirements {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+
+    .requirements-container small {
+        font-size: 16px; /* Increase font size for the <small> text */
+        color: #6c757d; /* Optional: adjust color if needed */
+    }
+
+.modal-dialog {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* Highlight style for selected requirements */
+.selected-requirement {
+    background-color: #d3f9d8; /* Light green color to indicate selection */
+    border-radius: 5px;
+    padding: 5px;
+}
+
+/* Search Container Styles */
+.search-container {
+    display: flex;
+    justify-content: flex-end;
+
+}
+
+.search-box-container {
+    position: relative;
+    width: 300px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px 35px 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+}
+
+.search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+/* Pagination Container Styles */
+.pagination-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    padding-right: 12px;
+}
+
+
+/* Add these styles to your managejob.css file */
+.environment-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.environment-header label {
+    margin-bottom: 0;
+    margin-right: 15px;
+    font-size: 1rem;
+}
+
+#create-ar-btn {
+    /* Smaller create AR button */
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+
+/* Environment Entry Styles */
+.environment-entry {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    background-color: #f8f9fa;
+}
+
+.environment-entry .row {
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.environment-entry .row:last-child {
+    margin-bottom: 0;
+}
+
+.environment-entry .form-control {
+    height: calc(1.5em + 0.75rem + 2px);
+}
+
+/* Center place name vertically */
+.place-name-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.place-name-container .form-control {
+    text-align: center;
+}
+
+/* Link container styles */
+.link-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.link-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* Button styles */
+.btn-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.delete-link-btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.environment-entry .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.add-environment-wrapper {
+    margin-top: 15px;
+}
+
+#add-environment {
+    /* Smaller add environment button */
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+}
+
+.delete-environment, .edit-environment {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+}
+
+/* Adjusted icon size */
+.environment-entry .btn i {
+    font-size: 0.875rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .environment-entry .col-md-2 {
+        margin-top: 10px;
+        text-align: left;
+    }
+    
+    .environment-entry .btn {
+        margin-left: 0;
+        margin-right: 5px;
+    }
+}
+
+
+.environment-header .btn {
+    margin-right: 5px;  /* Adds spacing between buttons */
+}
+

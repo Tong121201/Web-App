@@ -1,16 +1,19 @@
 <div class="sidebar" id="sidebar">
-    <div class="profile-pic">
-        <span>👤</span>
-    </div>
+    <button class="btn-close" id="close-sidebar" aria-label="Close"></button> <!-- Bootstrap close button -->
+    <!-- Profile picture section -->
+<div class="profile-pic">
+    <img id="sidebar-profile-pic"  alt="Profile Picture" />
+</div>
 
     <div class="sidebar-content">
         <div class="sidebar-item"><a href="profile-admin.html">Profile</a></div>
+        <div class="sidebar-item"><a href="adminhome.html">Homepage</a></div>
         
         
         
         <div class="sidebar-item"><a href="#">Students</a> <i class="down-button">▼</i></div>
         <ul>
-            <li>
+            <li class="faculty-name">
                 Faculty of Business and Management 
                 <i class="down-button">&#9658;</i>
                 <div class="dropdown_menu">
@@ -20,10 +23,10 @@
                             <i class="down-button">&#9658;</i>
                             <div class="dropdown_menu">
                                 <ul>
-                                    <li>Diploma in Culinary Arts</li>
-                                    <li>Diploma in Hotel Management</li>
-                                    <li>Bachelor of Hospitality Management (Honours)</li>
-                                    <li>Bachelor of Culinary Arts (Honours)</li>
+                                    <li><a href="#" onclick="selectProgram('Diploma in Culinary Arts')">Diploma in Culinary Arts</a></li>
+                                    <li><a href="#" onclick="selectProgram('Diploma in Hotel Management')">Diploma in Hotel Management</a></li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor of Hospitality Management (Honours)')">Bachelor of Hospitality Management (Honours)</a></li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor of Culinary Arts (Honours)')">Bachelor of Culinary Arts (Honours)</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -32,8 +35,8 @@
                             <i class="down-button">&#9658;</i>
                             <div class="dropdown_menu">
                                 <ul>
-                                    <li>Bachelor of Finance (Hons)</li>
-                                    <li>Bachelor of Accountancy (Honours)</li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor of Finance (Hons)')">Bachelor of Finance (Hons)</a></li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor of Accountancy (Honours)')">Bachelor of Accountancy (Honours)</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -42,8 +45,8 @@
                             <i class="down-button">&#9658;</i>
                             <div class="dropdown_menu">
                                 <ul>
-                                    <li>Diploma in Business Management</li>
-                                    <li>Bachelor of Business Administration (Honours)</li>
+                                    <li><a href="#" onclick="selectProgram('Diploma in Business Management')">Diploma in Business Management</a></li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor of Business Administration (Honours)')">Bachelor of Business Administration (Honours)</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -52,7 +55,7 @@
             </li>
             
 
-            <li>
+            <li class="faculty-name">
                 Faculty of Computing and Engineering 
                 <i class="down-button">&#9658;</i>
                 <div class="dropdown_menu">
@@ -62,9 +65,9 @@
                             <i class="down-button">&#9658;</i>
                             <div class="dropdown_menu">
                                 <ul>
-                                    <li>Diploma in Mechatronics Engineering</li>
-                                    <li>Bachelor of Mechatronics Engineering With Honours</li>
-                                    <li>Bachelor of Electronics Technology with Honours</li>
+                                    <li><a href="#" onclick="selectProgram('Diploma in Mechatronics Engineering')">Diploma in Mechatronics Engineering</a></li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor of Mechatronics Engineering with Honours')">Bachelor of Mechatronics Engineering With Honours</a></li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor of Electronics Technology with Honours')">Bachelor of Electronics Technology with Honours</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -73,10 +76,10 @@
                             <i class="down-button">&#9658;</i>
                             <div class="dropdown_menu">
                                 <ul>
-                                    <li>Diploma in Information Technology</li>
-                                    <li>Bachelor of Science (Honours) Actuarial Sciences</li>
-                                    <li>Bachelor of Information Technology (Hons)</li>
-                                    <li>Bachelor of Computer Science (Hons)</li>
+                                    <li><a href="#" onclick="selectProgram('Diploma in Information Technology')">Diploma in Information Technology</a></li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor of Science (Honours) Actuarial Sciences')">Bachelor of Science (Honours) Actuarial Sciences</a></li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor of Information Technology (Hons)')">Bachelor of Information Technology (Hons)</a></li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor of Computer Science (Hons)')">Bachelor of Computer Science (Hons)</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -85,7 +88,7 @@
             </li>
             
 
-            <li>
+            <li class="faculty-name">
                 Faculty of Integrated Life Sciences 
                 <i class="down-button">&#9658</i>
                 <div class="dropdown_menu">
@@ -95,10 +98,10 @@
                             <i class="down-button">&#9658</i>
                             <div class="dropdown_menu">
                                 <ul>
-                                    <li>Diploma in Environmental Technology</li>
-                                    <li>Bachelor of Environmental Technology (Honours)</li>
-                                    <li>Bachelor of Science in Biotechnology (Honours)</li>
-                                    <li>Bachelor in Food Science with Management (Honours)</li>
+                                    <li><a href="#" onclick="selectProgram('Diploma in Environmental Technology')">Diploma in Environmental Technology</a></li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor of Environmental Technology (Honours)')">Bachelor of Environmental Technology (Honours)</a></li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor of Science in Biotechnology (Honours)')">Bachelor of Science in Biotechnology (Honours)</a></li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor in Food Science with Management (Honours)')">Bachelor in Food Science with Management (Honours)</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -106,7 +109,7 @@
                 </div>
             </li>
 
-            <li>
+            <li class="faculty-name">
                 Faculty of Social Science 
                 <i class="down-button">&#9658</i>
                 <div class="dropdown_menu">
@@ -116,7 +119,7 @@
                             <i class="down-button">&#9658</i>
                             <div class="dropdown_menu">
                                 <ul>
-                                    <li>Bachelor of Arts (Honours) Teaching of English as a Second Language</li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor of Arts (Honours)Teaching of English as a Second Language')">Bachelor of Arts (Honours) Teaching of English as a Second Language</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -125,9 +128,9 @@
                             <i class="down-button">&#9658</i>
                             <div class="dropdown_menu">
                                 <ul>
-                                    <li>Diploma in Early Childhood Education</li>
-                                    <li>Bachelor in Early Childhood Education (Honours)</li>
-                                    <li>Bachelor of Special Needs Education (Honours)</li>
+                                    <li><a href="#" onclick="selectProgram('Diploma in Early Childhood Education')">Diploma in Early Childhood Education</a></li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor in Early Childhood Education (Honours)')">Bachelor in Early Childhood Education (Honours)</a></li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor of Special Needs Education (Honours)')">Bachelor of Special Needs Education (Honours)</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -136,9 +139,9 @@
                             <i class="down-button">&#9658</i>
                             <div class="dropdown_menu">
                                 <ul>
-                                    <li>Bachelor of Mass Communication (Honours) Advertising</li>
-                                    <li>Bachelor of Mass Communication (Honours) Journalism</li>
-                                    <li>Bachelor of Corporate Communication (Honours)</li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor of Mass Communication (Honours) Advertising')">Bachelor of Mass Communication (Honours) Advertising</a></li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor of Mass Communication (Honours) Journalism')">Bachelor of Mass Communication (Honours) Journalism</a></li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor of Corporate Communication (Honours)')">Bachelor of Corporate Communication (Honours)</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -147,7 +150,7 @@
                             <i class="down-button">&#9658</i>
                             <div class="dropdown_menu">
                                 <ul>
-                                    <li>Bachelor of Psychology (Honours)</li>
+                                    <li><a href="#" onclick="selectProgram('Bachelor of Psychology (Honours)')">Bachelor of Psychology (Honours)</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -155,8 +158,8 @@
                 </div>
             </li>
 
-            <li>Faculty of Pharmacy</li>
-            <li>Faculty of Medicine</li>
+            <li class="faculty-name"><a href="#" onclick="selectProgram('Faculty of Pharmacy')">Faculty of Pharmacy</a></li>
+            <li class="faculty-name"><a href="#" onclick="selectProgram('Faculty of Medicine')">Faculty of Medicine</a></li>
         </ul>
         
         <div class="sidebar-item"><a href="manage-employer.html">Employer Accounts</a></div>

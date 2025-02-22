@@ -1,0 +1,22 @@
+/* Pagination Styles - Separate from action buttons */
+.fixed-table-pagination .page-list {
+    position: relative; /* Contains the dropdown */
+}
+
+.fixed-table-pagination .page-list .dropdown-menu {
+    position: absolute !important; /* Changed from fixed */
+    top: auto !important;
+    bottom: 100% !important; /* Position above the button */
+    left: 0 !important;
+    right: auto !important;
+    margin-bottom: 5px; /* Space between dropdown and button */
+    z-index: 1000;
+    min-width: 80px;
+    transform: none !important;
+}
+
+/* Override any conflicting dropdown styles */
+.fixed-table-pagination .dropdown-menu {
+    max-height: 200px;
+    overflow-y: auto;
+}

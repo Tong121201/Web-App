@@ -3,28 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title>Employer Profile</title>
     <link rel="stylesheet" href="css/homepage.css">
-    <link rel="stylesheet" href="css/header.css"> <!-- Include sidebar styles -->
-    <link rel="stylesheet" href="css/sidebar.css"> <!-- Include header styles -->
-   
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/profile-employer.css">
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/profile-employer.js"></script> <!-- New JS for employer profile -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js"></script>
+    <script src="js/notification.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-     <div class="container">
-        <!-- Include sidebar component -->
+    <div class="layout">
+        <!-- Include header and sidebar components -->
+        <div id="header-container"></div>
         <div id="sidebar-container"></div>
+        <div class="content-wrapper">
+            <!-- Main Content Area -->
+            <div class="main-content" id="main-content">
+                <div class="profile-container">
+                    <button class="edit-btn" id="edit-profile"><i class="fas fa-edit"></i> Edit</button>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">Profile</li>
+                        </ol>
+                    </nav>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="position-relative d-inline-block text-center">
+                                <img src="https://via.placeholder.com/180" alt="Employer Profile" class="profile-picture mb-3" id="profile-image">
+                                <label for="profile-upload" class="change-photo">
+                                    <i class="fas fa-camera"></i>
+                                </label>
+                                <input type="file" id="profile-upload" hidden>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <h2 class="mb-1" id="company-name-display"></h2> 
+                            <p class="text-muted mb-1" id="email-display"></p> 
+                            <p class="text-muted mb-1" id="contact-display"></p>
+                            <p class="text-muted">Employer</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-12">
+                            <h4 class="mb-3">Account Information</h4>
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Company Name *</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <span id="company-name-text"></span>
+                                        <input type="text" class="form-control d-none" id="company-name" required>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Email *</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <span id="email-text"></span>
+                                        <input type="email" class="form-control d-none" id="email" required readonly>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Contact Number</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <span id="contact-text"></span>
+                                        <input type="tel" class="form-control d-none" id="contact" placeholder="Enter your contact number">
+                                    </div>
+                                </div>
+                                <!-- Address Information -->
+                                <div class="row mt-3">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Company Address</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div id="address-display" class="mb-2 address-info">
+                                            <span id="no-text" class="edit-mode-symbol">No.</span>
+                                            <span class="address-separator">, </span>
+                                            <span id="road-text" class="edit-mode-symbol">Road</span><br>
+                                            <span id="postcode-text" class="edit-mode-symbol">Postcode</span><span class="address-separator">, </span>
+                                            <span id="city-text" class="edit-mode-symbol">City</span><span class="address-separator">, </span>
+                                            <span id="state-text" class="edit-mode-symbol">State</span>
+                                        </div>
+                                        
+                                        <!-- Hidden input fields for editing mode -->
+                                        <input type="text" class="form-control d-none" id="no" placeholder="Building No." required>
+                                        <input type="text" class="form-control d-none mt-2" id="road" placeholder="Road" required>
+                                        <input type="text" class="form-control d-none mt-2" id="postcode" placeholder="Postcode" required>
+                                        <input type="text" class="form-control d-none mt-2" id="city" placeholder="City" required>
+                                        <!-- State Dropdown -->
+                                        <select id="state" name="state" class="form-control d-none mt-2" required>
+                                            <option value="" disabled selected>Select State</option>
+                                            <option value="Johor">Johor</option>
+                                            <option value="Kedah">Kedah</option>
+                                            <option value="Kelantan">Kelantan</option>
+                                            <option value="Kuala Lumpur">Kuala Lumpur</option>
+                                            <option value="Melaka">Melaka</option>
+                                            <option value="Negeri Sembilan">Negeri Sembilan</option>
+                                            <option value="Pahang">Pahang</option>
+                                            <option value="Penang">Penang</option>
+                                            <option value="Perak">Perak</option>
+                                            <option value="Perlis">Perlis</option>
+                                            <option value="Sabah">Sabah</option>
+                                            <option value="Sarawak">Sarawak</option>
+                                            <option value="Selangor">Selangor</option>
+                                            <option value="Terengganu">Terengganu</option>
+                                        </select>
+                                    </div>
+                                </div>
 
-        <!-- Main Content Area -->
-        <div class="main-content" id="main-content">
-            <!-- Include header component -->
-            <div id="header-container"></div>
-            <h1>Profile</h1>
-            <p>Employer can edit profile here.</p>
+                                <div class="row mt-4">
+                                    <div class="col-md-12 text-end">
+                                        <button type="submit" class="save-btn d-none">Save Changes</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <button id="change-password-btn" class="btn btn-primary">
+                                Change Password
+                            </button>
+                            <!-- Change Password Form -->
+                            <div id="change-password-container" class="d-none">
+                                <div class="row mt-3">
+                                    <div class="col-md-3">
+                                        <label for="current-password">Current Password</label>
+                                    </div>
+                                    <div class="col-md-9 position-relative">
+                                        <input type="password" id="current-password" class="form-control">
+                                        <span class="toggle-password" id="toggle-current-password">👁️</span> <!-- Toggle icon -->
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-3">
+                                        <label for="new-password">New Password</label>
+                                    </div>
+                                    <div class="col-md-9 position-relative">
+                                        <input type="password" id="new-password" class="form-control">
+                                        <span class="toggle-password" id="toggle-new-password">👁️</span> <!-- Toggle icon -->
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-3">
+                                        <label for="confirm-password">Confirm Password</label>
+                                    </div>
+                                    <div class="col-md-9 position-relative">
+                                        <input type="password" id="confirm-password" class="form-control">
+                                        <span class="toggle-password" id="toggle-confirm-password">👁️</span> <!-- Toggle icon -->
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-12 text-end">
+                                        <button type="submit" class="update-password-btn">Update Password</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-
-
-    <script type="module" src="js/main.js"></script>
- 
+    </div>  
 </body>
 </html>

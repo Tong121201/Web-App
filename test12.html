@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload JSON to Firebase</title>
+    <script type="module">
+        // Import Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+
+          // Your web app's Firebase configuration
+    const firebaseConfig = {
+    apiKey: "AIzaSyDOtb-QtwEqIaWPYOjvGsS4HGycXhZ8eZw",
+    authDomain: "myproject-9638b.firebaseapp.com",
+    databaseURL: "https://myproject-9638b-default-rtdb.firebaseio.com",
+    projectId: "myproject-9638b",
+    storageBucket: "myproject-9638b.appspot.com",
+    messagingSenderId: "419251176337",
+    appId: "1:419251176337:web:2e33df046378ef6c651030"
+    };
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Your JSON data to upload
+        const data = [
+        {
+  "field": [
+    {
+      "name": "Culinary Arts",
+      "jobRequirements": [
+        "Knowledge of kitchen safety and sanitation",
+        "Ability to follow recipes and plating standards",
+        "Hands-on culinary skills for diverse cuisines",
+        "Proficiency with kitchen equipment usage and maintenance",
+	      "Advanced culinary skills and creativity in menu planning",
+        "Understanding of food and beverage cost control",
+        "Food styling and presentation experience",
+        "Supervision and training of kitchen staff",
+        "Familiarity with dietary restrictions and nutrition principles",
+        "Knowledge of food safety regulations (HACCP)",
+        "Menu creation and development skills",
+        "Ability to manage kitchen inventory and order supplies",
+        "Expertise in high-volume food preparation",
+        "Strong palate and flavor pairing skills",
+        "Experience with food photography and media production",
+        "Proficient in international cuisines and fusion cooking",
+        "Strong organizational skills to manage kitchen workflow",
+        "Crisis management and quick decision-making under pressure"
+      ]
+    },
+    {
+      "name": "Hotel Management",
+      "jobRequirements": [
+        "Hospitality and guest relations skills",
+        "Knowledge of front office and housekeeping operations",
+        "Skills in event planning and banquet operations",
+        "Customer service orientation",
+	      "Advanced hotel and resort management skills",
+        "Understanding of financial management in hospitality",
+        "Proficiency in hospitality technology systems",
+        "Strong communication and leadership abilities",
+        "Experience with property management systems (PMS)",
+        "Knowledge of hotel revenue management and pricing strategies",
+        "Ability to manage and motivate a diverse hotel team",
+        "Budgeting and forecasting skills for hotel operations",
+        "Understanding of housekeeping, laundry, and maintenance processes",
+        "Ability to handle guest complaints and resolve conflicts",
+        "Knowledge of marketing and branding for hospitality businesses",
+        "Multilingual skills for international guest communication",
+        "Ability to ensure legal compliance and health/safety standards in hotel operations"
+      ]
+    },
+    {
+      "name": "Finance",
+      "jobRequirements": [
+        "Proficiency in financial analysis and forecasting",
+        "Knowledge of investment strategies and portfolio management",
+        "Corporate finance and risk management understanding",
+        "Advanced Excel and financial modeling skills",
+        "Knowledge of financial reporting and accounting standards (GAAP/IFRS)",
+        "Understanding of financial regulations and compliance (e.g., SOX)",
+        "Skills in financial statement preparation and analysis",
+        "Familiarity with financial software (e.g., QuickBooks, SAP)",
+        "Proficiency in tax planning and optimization strategies",
+        "Portfolio management and risk diversification",
+        "Debt and equity financing expertise",
+        "Knowledge of financial markets and global economies",
+        "Experience with M&A and corporate restructuring",
+        "Strategic financial planning and advisory skills",
+        "Strong analytical and problem-solving skills",
+        "Ability to interpret and apply financial data to business decisions"
+      ]
+    },
+    {
+      "name": "Accountancy",
+      "jobRequirements": [
+        "Understanding of accounting principles and standards",
+        "Experience with QuickBooks and SAP",
+        "Analytical skills for financial reporting",
+        "Knowledge of tax regulations and auditing procedures",
+        "Proficiency in creating balance sheets, income statements, and cash flow statements",
+        "Understanding of payroll processing and tax withholding",
+        "Experience with external audits and compliance",
+        "Ability to prepare financial statements for different business entities",
+        "Expertise in cost accounting and variance analysis",
+        "Familiarity with government and non-profit accounting practices",
+        "Knowledge of international accounting standards (IFRS)",
+        "Budget management and control skills",
+        "Expertise in forensic accounting and fraud detection",
+        "Risk management and internal control understanding",
+        "Proficiency in accounting software and ERP systems",
+        "Ability to generate financial forecasts and projections",
+        "Effective communication skills to explain financial information to stakeholders"
+      ]
+    },
+    {
+      "name": "Business Management",
+      "jobRequirements": [
+        "Understanding of business operations and management",
+        "Communication and interpersonal skills",
+        "Administrative and operational task management",
+        "Familiarity with office software and systems",
+	      "Business management principles understanding",
+        "Leadership and team management skills",
+        "Business strategy development and market trend analysis",
+        "Knowledge of marketing, finance, and operations",
+        "Project management skills (e.g., Agile, Scrum)",
+        "Change management and organizational development knowledge",
+        "Negotiation and conflict resolution abilities",
+        "Sales and business development expertise",
+        "Experience in process optimization and efficiency improvements",
+        "Risk management and problem-solving skills",
+        "Strong organizational and multitasking abilities",
+        "Ability to identify new business opportunities and partnerships",
+        "Knowledge of supply chain management and logistics"
+      ]
+    },
+    {
+      "name": "Mechatronics Engineering",
+      "jobRequirements": [
+        "Knowledge of mechanical and electronic systems",
+        "Skills in troubleshooting and repairing mechatronic equipment",
+        "Proficiency with engineering tools and software",
+        "Automation and control systems understanding",
+	      "Advanced mechatronic systems design",
+        "Proficiency in CAD and simulation software",
+        "Robotics and automation integration skills",
+        "Experience with sensors, actuators, and embedded systems",
+        "Knowledge of materials science and mechanical properties",
+        "Proficiency in programming for embedded systems (C, C++, Python)",
+        "Understanding of hydraulic, pneumatic, and electric power systems",
+        "Experience with microcontrollers and microprocessors (e.g., Arduino, Raspberry Pi)",
+        "Expertise in circuit design and PCB fabrication",
+        "Knowledge of machine learning and AI applications in mechatronics",
+        "Testing and validation of mechatronic systems and prototypes",
+        "Project management experience in engineering environments",
+        "Knowledge of manufacturing processes and automation techniques"
+      ]
+    },
+    {
+      "name": "Electronics Technology",
+      "degreeLevel": "Bachelor",
+      "jobRequirements": [
+        "Knowledge of electronic circuits and systems",
+        "Experience with PCB design and microcontrollers",
+        "Programming in C and Python",
+        "Signal processing and telecommunications knowledge",
+        "Expertise in analog and digital circuit design",
+        "Proficiency with embedded systems and firmware development",
+        "Knowledge of power electronics and energy management",
+        "Understanding of RF systems and communication protocols",
+        "Proficiency in using oscilloscopes, signal generators, and other lab equipment",
+        "Experience with wireless communication technologies (Wi-Fi, Bluetooth, ZigBee)",
+        "Proficiency in soldering and assembling electronic components",
+        "Familiarity with software development tools (IDE, compilers)",
+        "Knowledge of renewable energy systems and solar panel technology",
+        "Troubleshooting and repair skills for consumer electronics",
+        "Experience with IoT devices and smart technologies",
+        "Strong problem-solving skills for system integration and testing"
+      ]
+    },
+    {
+      "name": "Information Technology",
+      "jobRequirements": [
+        "Programming fundamentals",
+        "Networking basics",
+        "Troubleshooting software and hardware",
+        "Basic database management skills",
+	      "Software development lifecycle understanding",
+        "Proficiency in programming languages and frameworks",
+        "Cybersecurity and data management skills",
+        "Experience in cloud computing and networking",
+        "Knowledge of operating systems (Windows, Linux, macOS)",
+        "Experience with virtualization and containerization technologies (Docker, VMware)",
+        "Database design and optimization skills (SQL, NoSQL)",
+        "Knowledge of data structures, algorithms, and object-oriented programming",
+        "Skills in system analysis and design",
+        "Familiarity with Agile development methodologies",
+        "Experience with DevOps tools and CI/CD pipelines",
+        "Understanding of IT governance and compliance standards",
+        "Technical support and customer service experience",
+        "Cloud architecture and infrastructure management (AWS, Azure, Google Cloud)"
+      ]
+    },
+    {
+      "name": "Actuarial Sciences",
+      "jobRequirements": [
+        "Statistics and probability theory proficiency",
+        "Skills in actuarial software and programming (e.g., R, Python)",
+        "Risk assessment and financial modeling knowledge",
+        "Data analysis and insights generation",
+        "Proficiency in life insurance, health insurance, and pension plans",
+        "Knowledge of mortality and morbidity models",
+        "Strong understanding of actuarial tables and data interpretation",
+        "Ability to develop and implement pricing models for insurance products",
+        "Experience with predictive modeling and risk evaluation techniques",
+        "Ability to prepare actuarial reports and presentations for stakeholders",
+        "Knowledge of investment and financial markets, and their impact on actuarial models",
+        "Proficiency in mathematical modeling and simulations",
+        "Understanding of regulatory compliance in the insurance industry",
+        "Strong communication skills for explaining complex actuarial concepts to non-experts",
+        "Experience with actuarial exam preparation and professional certifications (e.g., SOA, CAS)"
+      ]
+    },
+    {
+      "name": "Computer Science",
+      "jobRequirements": [
+        "Advanced programming and algorithm knowledge",
+        "Database management and software development experience",
+        "Data structures and machine learning proficiency",
+        "Knowledge in AI, cybersecurity, and software engineering",
+        "Expertise in software design patterns and architecture",
+        "Proficiency in multiple programming languages (e.g., Python, Java, C++, JavaScript)",
+        "Web development expertise (HTML, CSS, JavaScript, frameworks like React or Angular)",
+        "Knowledge of mobile app development (Flutter, Swift, Kotlin)",
+        "Cloud computing and distributed systems experience",
+        "Experience with version control systems (Git, GitHub, GitLab)",
+        "Knowledge of big data technologies (e.g., Hadoop, Spark)",
+        "Skills in API development and integration",
+        "Understanding of blockchain and distributed ledger technology",
+        "Cybersecurity principles, encryption, and threat modeling skills",
+        "Experience in software testing, QA, and debugging",
+        "Strong problem-solving and critical-thinking abilities"
+      ]
+    },
+    {
+      "name": "Environmental Technology",
+      "jobRequirements": [
+        "Understanding of environmental policies and regulations",
+        "Waste management and pollution control skills",
+        "Basic environmental testing procedures knowledge",
+        "Field sampling and data collection experience",
+	"Sustainable practices knowledge",
+        "Environmental impact assessment proficiency",
+        "Renewable energy and resource management skills",
+        "Research skills in environmental issues",
+        "Knowledge of environmental laws, regulations, and compliance standards",
+        "Expertise in climate change and sustainability practices",
+        "Proficiency in environmental software and modeling tools (e.g., GIS, ArcGIS)",
+        "Skills in eco-friendly product development and green technologies",
+        "Knowledge of environmental risk assessment and mitigation strategies",
+        "Experience with environmental conservation and biodiversity monitoring",
+        "Skills in environmental auditing and reporting",
+        "Familiarity with eco-labeling and green certification processes",
+        "Community outreach and environmental advocacy experience"
+      ]
+    },
+    {
+      "name": "Biotechnology",
+      "jobRequirements": [
+        "Biological and chemical sciences knowledge",
+        "Laboratory equipment and research methods experience",
+        "Skills in genetic engineering and molecular biology",
+        "Bioinformatics and data analysis understanding",
+        "Expertise in PCR, gel electrophoresis, and DNA sequencing techniques",
+        "Knowledge of cell culture and tissue engineering",
+        "Familiarity with recombinant DNA technology",
+        "Proficiency in protein expression and purification techniques",
+        "Experience with CRISPR and gene editing technologies",
+        "Understanding of bioprocessing and biomanufacturing systems",
+        "Skills in clinical trial design and biostatistics",
+        "Knowledge of regulatory requirements in the pharmaceutical and biotechnology industries (FDA, EMA)",
+        "Experience with environmental and agricultural biotechnology",
+        "Expertise in bioinformatics tools and software (e.g., BLAST, GenBank)",
+        "Ethical considerations in genetic research and biotechnology",
+        "Strong research skills, critical thinking, and data analysis capabilities"
+      ]
+    },
+    {
+      "name": "Food Science with Management",
+      "jobRequirements": [
+        "Food safety and quality control knowledge",
+        "Food product development and sensory evaluation skills",
+        "Understanding of food processing and preservation",
+        "Regulatory compliance experience in the food industry",
+        "Knowledge of food labeling and packaging standards",
+        "Ability to assess and improve food quality through testing",
+        "Skills in food microbiology and contamination prevention",
+        "Expertise in developing and improving food formulations",
+        "Ability to work with suppliers and manage inventory for food production",
+        "Understanding of food supply chain and logistics management",
+        "Strong understanding of nutrition and dietary requirements",
+        "Ability to conduct shelf-life and stability testing",
+        "Proficiency in food production management and quality audits",
+        "Knowledge of food safety systems (e.g., HACCP, GMP)",
+        "Skills in cost control and budgeting for food production operations",
+        "Consumer behavior and food trend analysis"
+      ]
+    },
+    {
+      "name": "Teaching English as a Second Language",
+      "jobRequirements": [
+        "English language teaching methodology fluency",
+        "Second language acquisition theory knowledge",
+        "Classroom management and lesson planning skills",
+        "Experience with instructional materials and assessment",
+        "Understanding of various ESL teaching approaches (e.g., Communicative, Direct Method)",
+        "Ability to assess students’ proficiency and design tailored curricula",
+        "Experience with language proficiency tests (e.g., TOEFL, IELTS)",
+        "Proficiency in teaching pronunciation, vocabulary, and grammar",
+        "Skills in integrating technology into the ESL classroom",
+        "Ability to work with students from diverse linguistic and cultural backgrounds",
+        "Knowledge of teaching English for specific purposes (e.g., business, academic)",
+        "Strong communication and interpersonal skills",
+        "Classroom management and motivational techniques for second-language learners",
+        "Understanding of language testing, evaluation, and feedback techniques",
+        "Ability to adapt lessons to students' learning styles and needs"
+      ]
+    },
+    {
+      "name": "Early Childhood Education",
+      "jobRequirements": [
+        "Early childhood development theory knowledge",
+        "Classroom management for young learners",
+        "Child-centered and play-based learning experience",
+        "Understanding of child safety and welfare policies",
+ 	"Advanced early childhood pedagogy understanding",
+        "Age-appropriate curriculum design skills",
+        "Proficiency in child assessment and development tracking",
+        "Knowledge of inclusive education practices",
+        "Skills in fostering social-emotional development in young children",
+        "Ability to promote language and literacy development in early learners",
+        "Understanding of child psychology and developmental milestones",
+        "Experience with parent-teacher communication and involvement",
+        "Expertise in behavior management strategies and intervention techniques",
+        "Ability to integrate art, music, and physical activities into early childhood education",
+        "Familiarity with special education and early intervention programs",
+        "Knowledge of childhood nutrition, health, and well-being"
+      ]
+    },
+    {
+      "name": "Special Needs Education",
+      "jobRequirements": [
+        "Special education methodology knowledge",
+        "Individualized education plan (IEP) creation skills",
+        "Assistive technology and adaptive technique experience",
+        "Behavior management strategy understanding",
+        "Knowledge of learning disabilities and developmental delays",
+        "Skills in differentiated instruction and personalized learning",
+        "Proficiency in creating accessible learning environments",
+        "Experience with communication disorders and speech therapy techniques",
+        "Understanding of sensory processing disorders and accommodations",
+        "Experience in classroom modifications for physical disabilities",
+        "Knowledge of legal rights and policies related to special education",
+        "Ability to assess and track the progress of students with special needs",
+        "Strong advocacy skills for students with disabilities",
+        "Collaboration skills with multidisciplinary teams (e.g., therapists, counselors)",
+        "Experience in crisis intervention and de-escalation strategies",
+        "Knowledge of autism spectrum disorder (ASD) and related interventions"
+      ]
+    },
+    {
+      "name": "Mass Communication (Advertising)",
+      "jobRequirements": [
+        "Advertising strategies and campaign knowledge",
+        "Creative copywriting and graphic design skills",
+        "Digital marketing tools and analytics experience",
+        "Branding and media planning expertise",
+        "Knowledge of consumer behavior and market research",
+        "Proficiency in social media marketing and management",
+        "Experience with online and offline advertising channels (TV, radio, print)",
+        "Skills in content creation and storytelling for advertising",
+        "Understanding of the advertising industry trends and regulations",
+        "Knowledge of target audience segmentation and behavior",
+        "Experience with digital advertising platforms (Google Ads, Facebook Ads)",
+        "Ability to measure advertising effectiveness and ROI",
+        "Understanding of influencer marketing and partnerships",
+        "Familiarity with SEO and SEM strategies",
+        "Experience in campaign budgeting and cost optimization"
+      ]
+    },
+    {
+      "name": "Mass Communication (Journalism)",
+      "jobRequirements": [
+        "Journalistic writing and reporting proficiency",
+        "Media ethics and fact-checking understanding",
+        "Interviewing and investigative reporting skills",
+        "Digital media and content management experience",
+        "Knowledge of news writing and editorial standards",
+        "Experience with photojournalism and multimedia reporting",
+        "Familiarity with broadcast journalism (TV, radio)",
+        "Proficiency in video editing and production",
+        "Skills in data journalism and visual storytelling",
+        "Understanding of digital platforms and online content strategies",
+        "Experience in conducting field reporting and live coverage",
+        "Knowledge of current affairs, politics, and global issues",
+        "Ability to work under tight deadlines and manage multiple stories",
+        "Strong public speaking and presentation skills",
+        "Knowledge of media law and copyright issues",
+        "Experience with podcasting and other emerging media formats",
+      ]
+    },
+    {
+      "name": "Corporate Communication",
+      "jobRequirements": [
+        "Public relations and media relations skills",
+        "Corporate branding and image management knowledge",
+        "Event planning and stakeholder engagement experience",
+        "Communication strategy development proficiency",
+        "Crisis communication and reputation management skills",
+        "Experience with corporate social responsibility (CSR) initiatives",
+        "Skills in internal communication and employee engagement",
+        "Ability to write press releases, speeches, and corporate communications",
+        "Knowledge of corporate governance and transparency practices",
+        "Expertise in digital communication tools and social media",
+        "Proficiency in creating presentations and reports for executives",
+        "Experience in public speaking and media interviews",
+        "Understanding of international communication strategies",
+        "Knowledge of communication trends and technologies",
+        "Collaboration skills across departments (HR, Marketing, Legal)"
+      ]
+    },
+    {
+      "name": "Psychology",
+      "jobRequirements": [
+        "Psychological theories and practice knowledge",
+        "Counseling and mental health assessment experience",
+        "Psychological testing and research skills",
+        "Human behavior and cognitive process understanding",
+        "Familiarity with clinical psychology, neuropsychology, and behavioral psychology",
+        "Experience in developing and implementing therapeutic interventions",
+        "Knowledge of developmental psychology across the lifespan",
+        "Skills in cognitive-behavioral therapy (CBT), psychotherapy, and other therapeutic techniques",
+        "Ability to diagnose mental health disorders using DSM-5 criteria",
+        "Understanding of mental health policies and ethical considerations",
+        "Proficiency in conducting psychological evaluations and assessments",
+        "Expertise in group therapy and family therapy dynamics",
+        "Experience with crisis intervention and de-escalation strategies",
+        "Knowledge of substance abuse counseling and addiction treatment",
+        "Familiarity with various psychological treatment modalities (e.g., EMDR, DBT)",
+        "Strong research and statistical skills for psychological studies and experiments",
+        "Understanding of psychological disorders and evidence-based treatments",
+        "Experience in neuropsychological assessments and rehabilitation",
+        "Ability to collaborate with other healthcare professionals (psychiatrists, social workers, etc.)",
+        "Familiarity with patient privacy regulations and ethical standards (e.g., HIPAA)"
+      ]
+    },
+    {
+      "name": "Pharmacy",
+      "jobRequirements": [
+        "Pharmaceutical sciences and pharmacology knowledge",
+        "Medication dispensing and patient counseling skills",
+        "Understanding of drug interactions and contraindications",
+        "Clinical and laboratory proficiency",
+        "Knowledge of pharmacokinetics and pharmacodynamics",
+        "Ability to prepare and dispense prescriptions accurately",
+        "Familiarity with over-the-counter medications and their indications",
+        "Expertise in compounding and formulating medications",
+        "Understanding of drug therapy management for chronic conditions",
+        "Ability to review patient medical histories and medications for safety",
+        "Skills in patient education regarding the safe use of medications",
+        "Proficiency in managing drug inventory and maintaining pharmaceutical records",
+        "Knowledge of clinical pharmacy practice and hospital pharmacy systems",
+        "Experience with medication therapy management (MTM) programs",
+        "Understanding of regulatory requirements (e.g., FDA, DEA, state regulations)",
+        "Ability to counsel patients on health and wellness topics, including lifestyle changes",
+        "Experience with immunizations and vaccine administration",
+        "Familiarity with pharmaceutical research and development processes",
+        "Expertise in drug distribution systems and automated dispensing technologies",
+        "Ability to collaborate with healthcare teams to optimize pharmacotherapy"
+      ]
+    },
+    {
+      "name": "Medicine",
+      "jobRequirements": [
+        "Medical and clinical procedure understanding",
+        "Patient care and diagnosis proficiency",
+        "Medical ethics and healthcare management skills",
+        "Medical technology and equipment experience",
+        "Knowledge of clinical decision-making and diagnostic processes",
+        "Expertise in performing physical examinations and taking patient histories",
+        "Ability to interpret lab results, imaging, and diagnostic tests",
+        "Skills in medical documentation and patient record management",
+        "Knowledge of preventive medicine and public health strategies",
+        "Understanding of emergency medicine and trauma care",
+        "Proficiency in managing acute and chronic conditions",
+        "Ability to prescribe medications and therapies based on patient needs",
+        "Expertise in surgical procedures and post-operative care",
+        "Knowledge of pediatrics, geriatrics, and specialized care for various populations",
+        "Familiarity with medical research, clinical trials, and evidence-based practices",
+        "Experience in interdisciplinary team collaboration (e.g., nurses, specialists)",
+        "Ability to maintain confidentiality and adhere to patient privacy laws (e.g., HIPAA)",
+        "Strong communication and interpersonal skills for interacting with patients and families",
+        "Proficiency in using electronic health records (EHR) and medical software",
+        "Awareness of global health issues, epidemiology, and emerging diseases"
+      ]
+    }
+  ]
+}
+
+        ];
+
+        // Upload data to Firestore
+        async function uploadData() {
+            try {
+                console.log("Data being uploaded:", data);  // Debugging the data variable
+
+                // Ensure data is iterable (an array)
+                if (Array.isArray(data)) {
+                    for (const field of data) {
+                        await addDoc(collection(db, "fields"), field);
+                    }
+                    alert("Data uploaded successfully!");
+                } else {
+                    throw new Error("Data is not an array.");
+                }
+            } catch (error) {
+                console.error("Error uploading data: ", error);
+                alert("Error uploading data: " + error.message);
+            }
+        }
+
+        // Call the upload function when the page is ready
+        window.onload = uploadData;
+    </script>
+</head>
+<body>
+    <h1>Uploading JSON Data to Firebase...</h1>
+    <p>Data will be uploaded to Firestore once the page loads.</p>
+</body>
+</html>

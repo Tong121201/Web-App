@@ -3,28 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Application</title>
+    <title>Manage Applications</title>
     <link rel="stylesheet" href="css/homepage.css">
-    <link rel="stylesheet" href="css/header.css"> <!-- Include sidebar styles -->
-    <link rel="stylesheet" href="css/sidebar.css"> <!-- Include header styles -->
-   
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/manage-application.css">
+    <link rel="stylesheet" href="css/manageapp2.css">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js"></script>
+    <script src="js/notification.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+    
+
+    <!-- Bootstrap and Bootstrap Table JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+
 </head>
 <body>
-     <div class="container">
-        <!-- Include sidebar component -->
+    <div class="layout">
+        <div id="header-container"></div>
         <div id="sidebar-container"></div>
-
-        <!-- Main Content Area -->
-        <div class="main-content" id="main-content">
-            <!-- Include header component -->
-            <div id="header-container"></div>
-            <h1>Manage Application</h1>
-            <p>Employer can manage application here.</p>
+        <div class="content-wrapper">
+            <div class="main-content" id="main-content">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">Application Management</li>
+                    </ol>
+                </nav>
+                <div class="table-container">
+                    <div class="table-responsive">
+                        <table id="applications_table" class="table table-bordered table-hover text-center" 
+                        data-toggle="table" 
+                        data-search="true" 
+                        data-pagination="true" 
+                        data-show-columns="true"
+                        data-minimum-count-columns="5" 
+                        data-show-toggle="true"
+                        data-click-to-select="true"
+                        data-toolbar=".action-bar">
+                            <thead>
+                                <tr>
+                                    <th data-field="studentName" data-visible="true" data-sortable="true">Student Name</th>
+                                    <th data-field="studentId" data-visible="false" data-sortable="true">Student ID</th>
+                                    <th data-field="studentEmail" data-visible="true" data-sortable="true">Student Email</th>
+                                    <th data-field="studentPhone" data-visible="true" data-sortable="true">Contact</th>
+                                    <th data-field="resume" data-visible="true">Resume</th>
+                                    <th data-field="placementLetter" data-visible="true">Placement Letter</th>
+                                    <th data-field="companyName" data-visible="false" data-sortable="true">Company Name</th>
+                                    <th data-field="jobTitle" data-visible="true" data-sortable="true">Job Title</th>
+                                    <th data-field="applicationDate" data-visible="true" data-sortable="true">Application Date</th>
+                                    <th data-field="status" data-visible="true" data-sortable="true">Status</th>
+                                    <th data-field="action" data-visible="true">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Table content will be dynamically populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
+    `<!-- Shortlist Modal -->
+<div class="modal fade" id="shortlistModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="shortlistModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title" id="shortlistModalLabel">Schedule Interview</h5>
+            </div>
+            <div class="modal-body">
+                <form id="shortlistForm">
+                    <div class="form-group">
+                        <label for="interviewDate">Interview Date</label>
+                        <input type="date" class="form-control" id="interviewDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="interviewTime">Interview Time</label>
+                        <input type="time" class="form-control" id="interviewTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="interviewType">Interview Type</label>
+                        <select class="form-control" id="interviewType" required>
+                            <option value="">Select Interview Type</option>
+                            <option value="online">Online Interview</option>
+                            <option value="physical">Physical Interview</option>
+                        </select>
+                    </div>
+                    <div id="locationDetails" class="form-group d-none">
+                        <label for="interviewLocation">Interview Location/Link</label>
+                        <input type="text" class="form-control" id="interviewLocation" 
+                               placeholder="Enter physical location or meeting link">
+                    </div>
+                    <div class="form-group">
+                        <label for="additionalNotes">Additional Notes (Optional)</label>
+                        <textarea class="form-control" id="additionalNotes" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-warning" onclick="submitShortlist()">Schedule Interview</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Accept Modal -->
+<div class="modal fade" id="acceptModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="acceptModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="acceptModalLabel">Upload Offer Letter</h5>
+            </div>
+            <div class="modal-body">
+                <form id="acceptForm">
+                    <div class="form-group">
+                        <label>Upload Offer Letter (PDF only)</label>
+                        <div class="file-upload-container">
+                            <div class="file-name-display" id="fileName">No file chosen</div>
+                            <label class="file-upload-label">
+                                Choose File
+                                <input type="file" 
+                                       class="file-upload-input" 
+                                       id="offerLetter" 
+                                       accept=".pdf" 
+                                       required>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="startDate">Start Date</label>
+                        <input type="date" class="form-control" id="startDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="acceptanceNotes">Additional Notes (Optional)</label>
+                        <textarea class="form-control" id="acceptanceNotes" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" onclick="submitAcceptance()">Submit Offer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reject Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="rejectModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="rejectModalLabel">Provide Feedback</h5>
+            </div>
+            <div class="modal-body">
+                <form id="rejectForm" class="needs-validation" novalidate>
+                    <div class="form-group">
+                        <label for="rejectionReason">Primary Reason for Rejection*</label>
+                        <select class="form-control" id="rejectionReason" required>
+                            <option value="">Select Reason</option>
+                            <option value="Insufficient Qualifications">Insufficient Qualifications</option>
+                            <option value="Lack of Required Experience">Lack of Required Experience</option>
+                            <option value="Technical Skills Gap">Technical Skills Gap</option>
+                            <option value="Culture Fit">Cultural Fit</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please select a reason for rejection.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="feedbackDetails">
+                            Detailed Feedback<span class="required"> *</span>
+                        </label>                        
+                        <textarea class="form-control" id="feedbackDetails" rows="4" 
+                                 placeholder="Please provide specific feedback to help the candidate improve" 
+                                 required></textarea>
+                        <div class="invalid-feedback">
+                            Please provide detailed feedback.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="improvementSuggestions">Suggestions for Improvement</label>
+                        <textarea class="form-control" id="improvementSuggestions" rows="3"
+                                 placeholder="What specific steps can the candidate take to improve?" 
+                                 required></textarea>
+                        <div class="invalid-feedback">
+                            Please provide suggestions for improvement.
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" onclick="submitRejection()">Submit Feedback</button>
+            </div>
+        </div>
+    </div>
 
     <script type="module" src="js/main.js"></script>
- 
+    <script type="module" src="js/manage-application.js"></script>
 </body>
 </html>

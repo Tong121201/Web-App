@@ -1,7 +1,18 @@
+<!-- header.html -->
 <div class="header">
     <div class="menu-icon" id="menu-toggle">☰</div>
     <div class="notification-bell" id="notificationBell">
         <span>🔔</span>
-        <span class="notification-count" id="notificationCount"></span>
+        <div class="notification-badge" id="notificationBadge">0</div>
+        <div class="notification-container" id="notificationContainer">
+            <div class="notification-header">
+                <h3>Notifications</h3>
+                <button class="clear-all" id="clearAllNotifications">Clear all</button>
+            </div>
+            <div class="notification-list" id="notificationList">
+                <!-- Notifications will be inserted here -->
+                <div class="empty-message">No notifications</div>
+            </div>
+        </div>
     </div>
 </div>

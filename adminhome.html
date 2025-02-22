@@ -4,26 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin  Homepage</title>
-    <link rel="stylesheet" href="css/homepage.css">
+    <link rel="stylesheet" href="css/adminhome.css">
     <link rel="stylesheet" href="css/header.css"> <!-- Include sidebar styles -->
     <link rel="stylesheet" href="css/sidebar-admin.css"> <!-- Include header styles -->
-    <script type="module" src="../js/admin.js" defer></script>
+    <script type="module" src="js/admin.js" defer></script>
+    <script type="module" src="js/adminhome.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js"></script>
+    <script src="js/admin-notification.js"></script>
+    
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
 <body>
-     <div class="container">
+    <div class="layout">
+        <!-- Include header component -->
+        <div id="header-container"></div>
         <!-- Include sidebar component -->
         <div id="sidebar-container"></div>
-
-        <!-- Main Content Area -->
-        <div class="main-content" id="main-content">
-            <!-- Include header component -->
-            <div id="header-container"></div>
-            <h1>Admin Homepage</h1>
-            <p>Welcome to your web application. This is where your main content will go.</p>
+        <div class="content-wrapper">
+            <!-- Main Content Area -->
+            <div class="main-content" id="main-content">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                    </ol>
+                </nav>
+                <div class="status-container full-width">
+                    <!-- Status items will be dynamically populated by JavaScript -->
+                </div>
+                <div class="chart-and-table-container">
+                    <div class="students-chart-container">
+                        <canvas id="facultyHiringPieChart"></canvas>
+                    </div>
+                    <div class="students-table-container">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h3>Overview Student Status by Faculty</h3>
+                        </div>
+                        <table id="studentsTable" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Faculty</th>
+                                    <th>Total Students</th>
+                                    <th>Hired Students</th>
+                                    <th>Pending Students</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentsTableBody">
+                                <!-- Table rows will be dynamically populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="employer-status-container full-width">
+                    <!-- Status items will be dynamically populated by JavaScript -->
+                </div>
+                <div class="chart-and-table-container">
+                    <div class="top-employers-chart-container">
+                        <canvas id="topEmployersBarChart"></canvas>
+                    </div>
+                    <div class="employers-table-container">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h3>Employers Overview</h3>
+                            <button id="manageEmpBtn" class="btn btn-primary">Manage Employers</button>
+                        </div>
+                        <table id="employersTable" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Company</th>
+                                    <th>Created Jobs</th>
+                                    <th>Hired Students</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="employersTableBody">
+                                <!-- Table rows will be dynamically populated -->
+                            </tbody>
+                        </table>
+                        <div class="pagination-container">
+                            <button id="prevEmployersBtn" class="btn btn-secondary">&lt;</button>
+                            <span id="employersPageInfo">Page 1 of 1</span>
+                            <button id="nextEmployersBtn" class="btn btn-secondary">&gt;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
- 
 </body>
 </html>
+                

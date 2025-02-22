@@ -5,26 +5,294 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Job</title>
     <link rel="stylesheet" href="css/homepage.css">
-    <link rel="stylesheet" href="css/header.css"> <!-- Include sidebar styles -->
-    <link rel="stylesheet" href="css/sidebar.css"> <!-- Include header styles -->
-   
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/managejob.css">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js"></script>
+    <script src="js/notification.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+
+    <!-- Bootstrap and Bootstrap Table JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
 </head>
 <body>
-     <div class="container">
+    <div class="layout">
+        <!-- Include header component -->
+        <div id="header-container"></div>
         <!-- Include sidebar component -->
         <div id="sidebar-container"></div>
-
-        <!-- Main Content Area -->
-        <div class="main-content" id="main-content">
-            <!-- Include header component -->
-            <div id="header-container"></div>
-            <h1>Manage Job</h1>
-            <p>Employer can create, update, and delete job here.</p>
+        <div class="content-wrapper">
+            <!-- Main Content Area -->
+            <div class="main-content" id="main-content">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">Manage Jobs</li>
+                        <li class="breadcrumb-item active" aria-current="page">My Jobs</li>
+                        <button class="btn btn-primary create-btn" onclick="createJob()">Create Job</button>
+                    </ol>
+                </nav>
+                <div class="container-fluid mb-4" >
+                    <div class="row">
+                        
+                            <!-- Search Container -->
+                            <div class="search-container">
+                                <div class="search-box-container">
+                                    <input type="text" class="search-input" placeholder="Search jobs">
+                                    <i class="fas fa-search search-icon"></i>
+                                </div>
+                            </div>
+                       
+                    </div>
+                </div>
+    
+                <div class="container-fluid">
+                    <div id="jobsList">
+                        <!-- Jobs will be loaded here -->
+                    </div>
+                </div>
+               
+                <div id="paginationContainer" class="pagination-container">
+                    <!-- Pagination will be dynamically inserted here -->
+                </div>
+            </div>
         </div>
     </div>
 
+    <!-- Create Job Modal -->
+    <div class="modal fade" id="createJobModal" tabindex="-1" aria-labelledby="createJobModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="createJobModalLabel">Create Job Listing</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="jobForm">
+                        <input type="hidden" id="form-mode" value="create">
+                        <div class="form-group">
+                            <label for="job_title">Job Title <i style="color: red;">*</i></label>
+                            <input type="text" class="form-control" id="job-title" placeholder="Enter Job Title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="job_description">Job Description <i style="color: red;">*</i></label>
+                            <textarea class="form-control" id="job-description" rows="3" placeholder="Enter Job Description" required></textarea>
+                        </div>
+                        <!-- Field Selection Dropdown -->
+                        <div class="form-group">
+                            <label for="job_requirement">Job Requirement<i style="color: red;">*</i></label>
+                            <div class="input-group">
+                                <select id="field-select">
+                                    <option value="">Select Field</option>
+                                    <option value="Culinary Arts">Culinary Arts</option>
+                                    <option value="Hotel Management">Hotel Management</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="Accountancy">Accountancy</option>
+                                    <option value="Business Management">Business Management</option>
+                                    <option value="Mechatronics Engineering">Mechatronics Engineering</option>
+                                    <option value="Electronics Technology">Electronics Technology</option>
+                                    <option value="Information Technology">Information Technology</option>
+                                    <option value="Actuarial Sciences">Actuarial Sciences</option>
+                                    <option value="Computer Science">Computer Science</option>
+                                    <option value="Environmental Technology">Environmental Technology</option>
+                                    <option value="Biotechnology">Biotechnology</option>
+                                    <option value="Food Science with Management">Food Science with Management</option>
+                                    <option value="Teaching English as a Second Language">Teaching English as a Second Language</option>
+                                    <option value="Early Childhood Education">Early Childhood Education</option>
+                                    <option value="Special Needs Education">Special Needs Education</option>
+                                    <option value="Mass Communication (Advertising)">Mass Communication (Advertising)</option>
+                                    <option value="Mass Communication (Journalism)">Mass Communication (Journalism)</option>
+                                    <option value="Corporate Communication">Corporate Communication</option>
+                                    <option value="Psychology">Psychology</option>
+                                    <option value="Pharmacy">Pharmacy</option>
+                                    <option value="Medicine">Medicine</option>
+                                </select>
+                            </div>
+                        </div>
 
-    <script type="module" src="js/main.js"></script>
- 
+                        <!-- Custom Job Requirement Input -->
+                        <div id="custom-requirements" class="form-group">
+                            <div class="input-group">
+                                <input type="text" id="custom-requirement" class="form-control" placeholder="Type a custom requirement">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="addCustomRequirement()">
+                                        <i class="bi bi-plus"></i> Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Selected Requirements List -->
+                        <div id="job-requirements-list" class="form-group">
+                            <!-- Dynamic job requirements will be inserted here -->
+                        </div>
+
+                        <div class="form-group">
+                            <label for="hired-pax">Hired Pax <i style="color: red;">*</i></label>
+                            <input type="number" id="hired-pax" name="hired-pax" placeholder="Enter Number of Hired Pax" min="0" required>
+                        </div>
+                        
+                        <!-- Preferred Qualification Field -->
+                        <div class="form-group">
+                            <label for="preferred-qualification">Preferred Qualification <i style="color: red;">*</i></label>
+                            <select class="form-control" id="preferred-qualification" required>
+                                <option value="" disabled selected>Select Preferred Qualification</option>
+                                <option value="diploma">Diploma</option>
+                                <option value="degree">Degree</option>
+                                <option value="diploma_or_degree">Diploma or Degree</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="job_salary">Allowance (MYR) <i style="color: red;">*</i></label>
+                            <input type="text" class="form-control" id="job-allowance" placeholder="Enter Allowance" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="job-location">Location <i style="color: red;">*</i></label>
+                            <div class="location-group">
+                                <!-- First row: No. and Road -->
+                                <div class="location-row">
+                                    <input type="text" id="no" name="no" placeholder="No" required>
+                                    <input type="text" id="road" name="road" placeholder="Road" required>
+                                </div>
+                                <!-- Second row: Postcode and City -->
+                                <div class="location-row">
+                                    <input type="text" id="postcode" name="postcode" placeholder="Postcode" required>
+                                    <input type="text" id="city" name="city" placeholder="City" required>
+                                </div>
+                                <!-- Third row: State -->
+                                <div class="location-row">
+                                    <select id="state" name="state" required>
+                                        <option value="" disabled selected>Select State</option>
+                                        <option value="Johor">Johor</option>
+                                        <option value="Kedah">Kedah</option>
+                                        <option value="Kelantan">Kelantan</option>
+                                        <option value="Kuala Lumpur">Kuala Lumpur</option>
+                                        <option value="Melaka">Melaka</option>
+                                        <option value="Negeri Sembilan">Negeri Sembilan</option>
+                                        <option value="Pahang">Pahang</option>
+                                        <option value="Penang">Penang</option>
+                                        <option value="Perak">Perak</option>
+                                        <option value="Perlis">Perlis</option>
+                                        <option value="Sabah">Sabah</option>
+                                        <option value="Sarawak">Sarawak</option>
+                                        <option value="Selangor">Selangor</option>
+                                        <option value="Terengganu">Terengganu</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Add this right after the location-group div in the form -->
+                        <div class="form-group">
+                            <div class="environment-header">
+                                <label for="company-environment">Company Environment (AR) <i style="color: red;">*</i></label>
+                                <button type="button" class="btn btn-outline-primary" id="create-ar-btn">
+                                    Create AR
+                                </button>
+                                <button type="button" class="btn btn-outline-primary" id="momento-btn">
+                                    Create Momento360
+                                </button>
+                            </div>
+                            <div id="company-environments-container">
+                                <div class="environment-entry">
+                                    <!-- AR Link Row -->
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="place-name-container">
+                                                <input type="text" class="form-control" placeholder="Place Name" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="link-container">
+                                                <div class="link-row ar-link-row">
+                                                    <input type="text" class="form-control" placeholder="AR Link">
+                                                    <button type="button" class="btn btn-outline-danger delete-link-btn delete-ar-link">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="link-row momento-link-row">
+                                                    <input type="text" class="form-control" placeholder="Momento Link">
+                                                    <button type="button" class="btn btn-outline-danger delete-link-btn delete-momento-link">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 text-right">
+                                            <div class="btn-container">
+                                                <button type="button" class="btn btn-outline-danger delete-environment">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="add-environment-wrapper">
+                                <button type="button" class="btn btn-outline-primary" id="add-environment">
+                                    <i class="bi bi-plus"></i> Add Environment
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="job_email">Email <i style="color: red;">*</i></label>
+                            <input type="email" class="form-control" id="job-email" placeholder="Enter Email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="job_phone">Phone Number <i style="color: red;">*</i></label>
+                            <input type="tel" class="form-control" id="job-phone" placeholder="(e.g 0123456789)" required>
+                        </div>  
+                        
+                        
+                        <div class="form-group">
+                            <label for="job_status">Status</label>
+                            <select class="form-control" id="job-status">
+                                <option value="active" selected>Active</option>
+                                <option value="hidden">Hidden</option>
+                            </select>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="reset" class="btn btn-warning" id="reset-btn">Reset</button>
+                            <button type="button" class="btn btn-secondary" id="cancel-btn">Cancel</button>
+                            <button type="submit" class="btn btn-primary" id="submit">Create</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" ></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete the following job?</p>
+                    <p><strong>Job Title:</strong> <span id="deleteModalJobTitle"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/main.js" defer></script>
+    <script type="module" src="js/managejob.js" defer></script>
 </body>
 </html>

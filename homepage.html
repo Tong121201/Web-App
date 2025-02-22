@@ -5,29 +5,193 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Application Homepage</title>
     <link rel="stylesheet" href="css/homepage.css">
-    <link rel="stylesheet" href="css/header.css"> <!-- Include sidebar styles -->
-    <link rel="stylesheet" href="css/sidebar.css"> <!-- Include header styles -->
+    <link rel="stylesheet" href="css/header.css"> <!-- Header styles -->
+    <link rel="stylesheet" href="css/sidebar.css"> <!-- Sidebar styles -->
     <script type="module" src="js/main.js" defer></script>
+    <script type="module" src="js/homepage.js"></script>
+    <!-- Add these in your HTML file in this order -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js"></script>
+    <script src="js/notification.js"></script>
     
-   
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
 <body>
-     <div class="container">
+    <div class="layout">
+        <!-- Include header component -->
+        <div id="header-container"></div>
         <!-- Include sidebar component -->
         <div id="sidebar-container"></div>
+        <div class="content-wrapper">
+            <!-- Main Content Area -->
+            <div class="main-content" id="main-content">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                    </ol>
+                </nav>
+                <div class="status-container full-width">
+                    <div class="status-item">
+                      <div class="status-icon">
+                        <i class="fas fa-check"></i>
+                      </div>
+                      <div class="status-info">
+                        <div class="status-text">Hired (Accepted)</div>
+                        <div class="status-count"></div>
+                      </div>
+                    </div>
+                    <div class="status-item">
+                      <div class="status-icon">
+                        <i class="fas fa-check"></i>
+                      </div>
+                      <div class="status-info">
+                        <div class="status-text">Approved</div>
+                        <div class="status-count"></div>
+                      </div>
+                    </div>
+                    <div class="status-item">
+                      <div class="status-icon">
+                        <i class="fas fa-hourglass-half"></i>
+                      </div>
+                      <div class="status-info">
+                        <div class="status-text">Shortlisted</div>
+                        <div class="status-count"></div>
+                      </div>
+                    </div>
+                    <div class="status-item">
+                      <div class="status-icon">
+                        <i class="fas fa-hourglass-half"></i>
+                      </div>
+                      <div class="status-info">
+                        <div class="status-text">Pending</div>
+                        <div class="status-count"></div>
+                      </div>
+                    </div>
+                    <div class="status-item">
+                      <div class="status-icon">
+                        <i class="fas fa-times"></i>
+                      </div>
+                      <div class="status-info">
+                        <div class="status-text">Rejected</div>
+                        <div class="status-count"></div>
+                      </div>
+                    </div>
+                    <div class="status-item">
+                      <div class="status-icon">
+                        <i class="fas fa-times"></i>
+                      </div>
+                      <div class="status-info">
+                        <div class="status-text">Declined</div>
+                        <div class="status-count"></div>
+                      </div>
+                    </div>
+                    <div class="status-item">
+                      <div class="status-icon">
+                        <i class="fas fa-times"></i>
+                      </div>
+                      <div class="status-info">
+                        <div class="status-text">Withdrawn</div>
+                        <div class="status-count"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="chart-and-table-container">
+                    <!-- Pie Chart Section -->
+                    <div class="chart-container">
+                        <canvas id="statusPieChart"></canvas>
+                    </div>
+                    
+                    <!-- Applications Table Section -->
+                    <div class="applications-table-container">
+                      <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3>Pending & Shortlisted Applications</h3>
+                        <button id="manageApplicationsBtn" class="btn btn-primary">Manage Applications</button>
+                    </div>
+                        <table id="applicationsTable" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Applicant Name</th>
+                                    <th>Job Title</th>
+                                    <th>Applied Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="applicationsTableBody">
+                                <!-- Table rows will be dynamically populated -->
+                            </tbody>
+                        </table>
+                        <div class="pagination-container">
+                            <button id="prevApplicationsBtn" class="btn btn-secondary">&lt;</button>
+                            <span id="pageInfo">Page 1 of 1</span>
+                            <button id="nextApplicationsBtn" class="btn btn-secondary">&gt;</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="jobs-status-container">
+                  <div class="jobs-container full-width">
+                      <div class="status-item">
+                          <div class="status-icon">
+                              <i class="fas fa-briefcase"></i>
+                          </div>
+                          <div class="status-info">
+                              <div class="status-text">Active Jobs</div>
+                              <div class="status-count"></div>
+                          </div>
+                      </div>
+                      <div class="status-item">
+                          <div class="status-icon">
+                            <i class="fas fa-eye-slash"></i>
+                          </div>
+                          <div class="status-info">
+                              <div class="status-text">Hide Jobs</div>
+                              <div class="status-count"></div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
 
-        <!-- Main Content Area -->
-        <div class="main-content" id="main-content">
-            <!-- Include header component -->
-            <div id="header-container"></div>
-            <h1>Homepage</h1>
-            <p>Welcome to your web application. This is where your main content will go.</p>
+              <div class="chart-and-table-container">
+                <div class="job-applicants-chart-container">
+                    <canvas id="jobApplicantsBarChart"></canvas>
+                </div>
+                <div class="job-listings-table-container">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                      <h3>Job Listings</h3>
+                      <button id="manageJobsBtn" class="btn btn-primary">Manage Jobs</button>
+                  </div>
+                  <table id="jobListingsTable" class="table table-striped">
+                      <thead>
+                          <tr>
+                              <th>Job Title</th>
+                              <th>Posted Date</th>
+                              <th>Status</th>
+                              <th>Applicants</th>
+                          </tr>
+                      </thead>
+                      <tbody id="jobListingsTableBody">
+                          <!-- Table rows will be dynamically populated -->
+                      </tbody>
+                  </table>
+                  <div class="pagination-container">
+                    <button id="prevJobListingsBtn" class="btn btn-secondary">&lt;</button>
+                    <span id="jobListingsPageInfo">Page 1 of 1</span>
+                    <button id="nextJobListingsBtn" class="btn btn-secondary">&gt;</button>
+                </div>
+              </div>
+            </div>
+
+            </div>
         </div>
     </div>
-
-
-   
-    
+</div>
 </body>
 </html>

@@ -5,26 +5,141 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Profile</title>
     <link rel="stylesheet" href="css/homepage.css">
-    <link rel="stylesheet" href="css/header.css"> <!-- Include sidebar styles -->
-    <link rel="stylesheet" href="css/sidebar-admin.css"> <!-- Include header styles -->
-   
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/sidebar-admin.css">
+    <script type="module" src="js/admin.js"></script>
+    <link rel="stylesheet" href="css/profile-admin.css">
+    <script type="module" src="js/profile-admin.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-     <div class="container">
-        <!-- Include sidebar component -->
+    <div class="layout">
+        <!-- Include header and sidebar components -->
+        <div id="header-container"></div>
         <div id="sidebar-container"></div>
-
-        <!-- Main Content Area -->
-        <div class="main-content" id="main-content">
-            <!-- Include header component -->
-            <div id="header-container"></div>
-            <h1>Admin Profile</h1>
-            <p>Admin can edit profile here.</p>
+        <div class="content-wrapper">
+            <!-- Main Content Area -->
+            <div class="main-content" id="main-content">
+                <div class="profile-container">
+                    <button class="edit-btn" id="edit-profile"><i class="fas fa-edit"></i> Edit</button>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">Profile</li>
+                        </ol>
+                    </nav>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="position-relative d-inline-block text-center">
+                                <img src="https://via.placeholder.com/180" alt="Admin Profile" class="profile-picture mb-3" id="profile-image">
+                                <label for="profile-upload" class="change-photo">
+                                    <i class="fas fa-camera"></i>
+                                </label>
+                                <input type="file" id="profile-upload" hidden>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <h2 class="mb-1" id="fullname-display"></h2> 
+                            <p class="text-muted mb-1" id="email-display"></p> 
+                            <p class="text-muted">Administrator</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-12">
+                            <h4 class="mb-3">Account Information</h4>
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Username</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <span id="username-text"></span>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Email *</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <span id="email-text"></span>
+                                        <input type="email" class="form-control d-none" id="email"  required>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Full Name *</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <span id="fullname-text"></span>
+                                        <input type="text" class="form-control d-none" id="fullname" required>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Contact Number</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <span id="contact-text"></span>
+                                        <input type="tel" class="form-control d-none" id="contact"  placeholder="Enter your contact number">
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-md-12 text-end">
+                                        <button type="submit" class="save-btn d-none">Save Changes</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <button id="change-password-btn" class="btn btn-primary">
+                                Change Password
+                            </button>
+                            <!-- Change Password Form -->
+                            <div id="change-password-container" class="d-none">
+                                <div class="row mt-3">
+                                    <div class="col-md-3">
+                                        <label for="current-password">Current Password</label>
+                                    </div>
+                                    <div class="col-md-9 position-relative">
+                                        <input type="password" id="current-password" class="form-control">
+                                        <span class="toggle-password" id="toggle-current-password">👁️</span> <!-- Toggle icon -->
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-3">
+                                        <label for="new-password">New Password</label>
+                                    </div>
+                                    <div class="col-md-9 position-relative">
+                                        <input type="password" id="new-password" class="form-control">
+                                        <span class="toggle-password" id="toggle-new-password">👁️</span> <!-- Toggle icon -->
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-3">
+                                        <label for="confirm-password">Confirm Password</label>
+                                    </div>
+                                    <div class="col-md-9 position-relative">
+                                        <input type="password" id="confirm-password" class="form-control">
+                                        <span class="toggle-password" id="toggle-confirm-password">👁️</span> <!-- Toggle icon -->
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-12 text-end">
+                                        <button type="submit" class="update-password-btn">Update Password</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </div>  
 
-
-    <script type="module" src="js/admin.js"></script>
- 
+    
 </body>
 </html>
